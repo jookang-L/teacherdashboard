@@ -1,0 +1,14 @@
+{
+  "AppVersion": "2.0.0.0",
+  "Title": "교사용 바탕화면 대시보드",
+  "Thumbnail": null,
+  "Preview": null,
+  "Desc": "Google Sheets 연동 교사용 카드뉴스 스타일 데스크탑 대시보드",
+  "Author": "Teacher Dashboard",
+  "License": null,
+  "Contact": null,
+  "Type": 1,
+  "FileName": "index.html",
+  "Arguments": "",
+  "IsAbsolutePath": false
+}
