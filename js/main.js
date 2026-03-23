@@ -51,6 +51,33 @@ function getDDaysForDate(dateStr) {
   return ddays.filter(d => d.date === dateStr);
 }
 
+/** 달력에서 추가한 '해당 일' 할 일 — `[MM-DD] 내용` 형식 (openMemoModal) */
+function hasCalendarTodoForDate(dateStr) {
+  const tag = `[${dateStr.slice(5)}]`;
+  try {
+    const raw = localStorage.getItem('dashboard_todos');
+    if (!raw) return false;
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list)) return false;
+    return list.some(t => {
+      const text = (t.text || '').trim();
+      return text.startsWith(tag);
+    });
+  } catch { return false; }
+}
+
+function dayHasCalendarMarker(dateStr) {
+  return getDDaysForDate(dateStr).length > 0 || hasCalendarTodoForDate(dateStr);
+}
+
+/** 스트립 DOM만 갱신 (스크롤 유지, TODO 로드 후 마커 반영) */
+function updateDayMarkersOnStrip() {
+  document.querySelectorAll('.cal-strip-day[data-date]').forEach(el => {
+    const ds = el.dataset.date;
+    el.classList.toggle('has-marker', dayHasCalendarMarker(ds));
+  });
+}
+
 /* =================================================================
    D-Day 카드뉴스 (달력 오른쪽)
    ================================================================= */
@@ -247,13 +274,13 @@ function renderCalendarStrip() {
     const ds = dateToStr(d);
     const dow = d.getDay();
     const isToday = ds === todayStr;
-    const hasDDay = getDDaysForDate(ds).length > 0;
+    const hasMarker = dayHasCalendarMarker(ds);
 
     let cls = 'cal-strip-day';
     if (isToday) cls += ' today';
     if (dow === 0) cls += ' sun';
     if (dow === 6) cls += ' sat';
-    if (hasDDay) cls += ' has-dday';
+    if (hasMarker) cls += ' has-marker';
 
     html += `<div class="${cls}" data-date="${ds}">
       <span class="day-num">${d.getDate()}</span>
@@ -430,6 +457,7 @@ async function loadAllData() {
     loadTimetable(), loadLunch(), loadTodos(),
     loadMemo(), loadLinks(),
   ]);
+  updateDayMarkersOnStrip();
 }
 
 /* =================================================================

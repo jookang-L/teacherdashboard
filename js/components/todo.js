@@ -53,6 +53,7 @@ function toggleTodo(id) {
 function deleteTodo(id) {
   todos = todos.filter(x => x.id !== id);
   renderTodos(); saveTodosLocal();
+  if (typeof updateDayMarkersOnStrip === 'function') updateDayMarkersOnStrip();
 }
 
 function addTodo(text) {
@@ -60,6 +61,7 @@ function addTodo(text) {
   const maxId = todos.reduce((m, t) => Math.max(m, t.id), -1);
   todos.push({ id: maxId + 1, text: text.trim(), done: false });
   renderTodos(); saveTodosLocal();
+  if (typeof updateDayMarkersOnStrip === 'function') updateDayMarkersOnStrip();
 }
 
 function initTodoInput() {

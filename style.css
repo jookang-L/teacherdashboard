@@ -1035,14 +1035,19 @@ body {
   color: #fff;
 }
 
-.cal-strip-day.has-dday::after {
+/* D-Day 또는 해당 일 할 일(메모)이 있을 때 요일 글자 아래 노란 점 */
+.cal-strip-day.has-marker::after {
   content: '';
   position: absolute;
-  bottom: 3px;
-  width: 5px;
-  height: 5px;
-  background: #fbbf24;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #facc15;
   border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 }
 
 /* ============================================= */
