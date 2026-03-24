@@ -222,18 +222,20 @@ function initTTContextMenu() {
 
   let ctxDay = 0, ctxPeriod = 0;
 
-  document.getElementById('timetable-list').addEventListener('contextmenu', e => {
-    e.preventDefault();
+  document.getElementById('timetable-list').addEventListener('dblclick', e => {
     const li = e.target.closest('.timetable-item[data-period]');
     if (!li) return;
 
     ctxDay = parseInt(li.dataset.day, 10);
     ctxPeriod = parseInt(li.dataset.period, 10);
 
+    const rect = li.getBoundingClientRect();
     menu.style.display = 'block';
-    let x = e.clientX, y = e.clientY;
-    if (x + menu.offsetWidth > window.innerWidth) x = window.innerWidth - menu.offsetWidth - 8;
-    if (y + menu.offsetHeight > window.innerHeight) y = window.innerHeight - menu.offsetHeight - 8;
+    let x = rect.left + rect.width / 2 - menu.offsetWidth / 2;
+    let y = rect.bottom + 4;
+    if (x < 4) x = 4;
+    if (x + menu.offsetWidth > window.innerWidth - 4) x = window.innerWidth - menu.offsetWidth - 4;
+    if (y + menu.offsetHeight > window.innerHeight - 4) y = rect.top - menu.offsetHeight - 4;
     menu.style.left = x + 'px';
     menu.style.top = y + 'px';
   });
